@@ -10,14 +10,11 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Set;
 
-import javax.swing.text.MaskFormatter;
-
 import com.p2p.core.interfaces.HandlerInterface;
 import com.p2p.core.interfaces.RouterInterface;
 import com.p2p.core.interfaces.SocketInterface;
 import com.p2p.core.interfaces.StabilizerInterface;
 import com.p2p.core.socket.PeerSocketFactory;
-import com.p2p.core.socket.SocketFactory;
 import com.p2p.core.util.LoggerUtil;
 /**
  * Main class for the P2P System.
@@ -33,7 +30,7 @@ public class PeerNode {
 	private Hashtable<String,HandlerInterface> handlers;
 	private Hashtable<String,PeerInfo> peers;
 	private RouterInterface router;
-	private boolean shotdown;
+	private boolean shutdown;
 	
 	public PeerNode(int maxPeers, PeerInfo info){
 		if(info.getHost() == null){
@@ -47,7 +44,7 @@ public class PeerNode {
 		this.peers = new Hashtable<String,PeerInfo>();
 		this.handlers = new Hashtable<String,HandlerInterface>();
 		this.router = null;
-		this.shotdown = false;
+		this.shutdown = false;
 	}
 	public PeerNode(int port){
 		this(0,new PeerInfo(port));
@@ -58,15 +55,27 @@ public class PeerNode {
 	 */
 	private String getHostname() {
 		String host = "";
+		Socket s = null;
 		try {
-			Socket s = new Socket("www.google.com", 80);
+			 s = new Socket("www.google.com", 80);
 			host = s.getLocalAddress().getHostAddress();
+		
 		}
 		catch (UnknownHostException e) {
 			LoggerUtil.getLogger().warning("Could not determine host: " + e);
 		}
 		catch (IOException e) {
 			LoggerUtil.getLogger().warning(e.toString());
+		}finally{
+			if(s!= null){
+				if(!s.isClosed()){
+					try{
+					s.close();
+					}catch(IOException ex){
+						LoggerUtil.getLogger().severe(ex.getMessage());
+					}
+				}
+			}
 		}
 		
 		LoggerUtil.getLogger().config("Determined host: " + host);
@@ -106,7 +115,7 @@ public class PeerNode {
     	return connectAndSend(info,type,data,waitReply);
     }
     /**
-     * Connects to the specified peere to send a message, optionally waiting and returning all the replies
+     * Connects to the specified peer node to send a message, optionally waiting and returning all the replies
      * @param info the peer info
      * @param type of the message being sent
      * @param data the message data
@@ -144,7 +153,7 @@ public class PeerNode {
     	try{
     		ServerSocket socket = makeServerSocket(myInfo.getPort());
     		socket.setSoTimeout(SOCKET_TIMEOUT);
-    		while(!this.shotdown){
+    		while(!this.shutdown){
     			LoggerUtil.getLogger().fine("Listening...");
     			try{
     				Socket client = socket.accept();
@@ -163,7 +172,7 @@ public class PeerNode {
     	}catch(IOException ioe){
     		LoggerUtil.getLogger().severe("Stopping main loop (IOExc): " + ioe);
     	}
-    	this.shotdown = true;
+    	this.shutdown = true;
     	
     }
     public void startStabilizer(StabilizerInterface st, int delay){
