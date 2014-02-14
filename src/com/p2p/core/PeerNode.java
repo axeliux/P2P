@@ -214,6 +214,9 @@ public class PeerNode {
     public int getPort(){
     	return myInfo.getPort();
     }
+    public String getId(){
+    	return myInfo.getId();
+    }
     
     private class PeerHandler extends Thread{
     	private SocketInterface socket;
