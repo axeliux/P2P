@@ -4,8 +4,6 @@ import java.util.Hashtable;
 import java.util.List;
 
 import com.p2p.core.P2PMessage;
-import com.p2p.core.PeerConnection;
-import com.p2p.core.PeerHandler;
 import com.p2p.core.PeerInfo;
 import com.p2p.core.PeerNode;
 import com.p2p.core.util.LoggerUtil;
