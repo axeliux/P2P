@@ -15,7 +15,9 @@ import com.p2p.sharer.handlers.QueryHandler;
 import com.p2p.sharer.handlers.QueryResponseHandler;
 import com.p2p.sharer.handlers.QuitHandler;
 import com.p2p.sharer.handlers.Router;
-
+/**
+ * Backend Implementation for a Sharer File Node
+ * */
 public class SharerNode extends PeerNode {
 	private Hashtable<String,String> files;
 	
