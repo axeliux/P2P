@@ -25,7 +25,10 @@ public class SharerNode extends PeerNode {
 		super(maxPeers,myInfo);
 		this.files = new Hashtable<String,String>();
 		this.addRouter(new Router(this));
+		this.addHandlers();
 		
+	}
+	private void addHandlers(){
 		this.addHandler(SharerMessage.INSERT_PEER,new JoinHandler(this));
 		this.addHandler(SharerMessage.LIST_PEER, new ListHandler(this));
 		this.addHandler(SharerMessage.PEER_NAME, new NameHandler(this));
