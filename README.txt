@@ -2,6 +2,8 @@ Peet to Peer Framework & Sharer App
 =======================================
 @author Axel Velazquez
 
+Expected finish time : March 15th
+
 com.p2p.core
 ============
 The clasess contained at this level contains the base implementation for a Peer 2 Peer Netowork System.
