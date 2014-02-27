@@ -9,6 +9,7 @@ import java.net.UnknownHostException;
 import com.p2p.core.interfaces.SocketInterface;
 
 /**
+ * PeerSocket
  * Encapsulates the standard Socket object of the Java Library 
  * to fit the Socket Interface of the P2P system.
  * @author axvelazq
